@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Элина, тебе послание! ✨</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      min-height: 100vh;
+      min-height: -webkit-fill-available;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at center, #1f1b2c 0%, #12121e 100%);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      overflow: hidden;
+      color: #e2e2e8;
+      padding: 16px;
+    }
+
+    html {
+      height: -webkit-fill-available;
+    }
+
+    /* Карточка-открытка в тёмном стиле */
+    .card {
+      background: rgba(28, 27, 41, 0.85);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 32px;
+      padding: 28px 20px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 105, 180, 0.15);
+      width: 100%;
+      max-width: 380px;
+      text-align: center;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* Экран 1: Конверт */
+    .start-screen {
+      cursor: pointer;
+      padding: 10px 0;
+    }
+
+    .envelope-icon {
+      font-size: 75px;
+      margin-bottom: 12px;
+      display: inline-block;
+      animation: heartBeat 1.8s infinite ease-in-out;
+      filter: drop-shadow(0 0 15px rgba(255, 105, 180, 0.4));
+    }
+
+    .start-screen h2 {
+      color: #ff7597;
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .start-screen p {
+      color: #a0a0b2;
+      font-size: 15px;
+    }
+
+    .tap-btn {
+      margin-top: 22px;
+      display: inline-block;
+      background: linear-gradient(45deg, #ff477e, #b5179e);
+      color: #fff;
+      padding: 12px 26px;
+      border-radius: 25px;
+      font-weight: 600;
+      font-size: 15px;
+      box-shadow: 0 6px 20px rgba(255, 71, 126, 0.4);
+    }
+
+    /* Экран 2: Контент */
+    .content-screen {
+      display: none;
+      opacity: 0;
+      animation: fadeIn 0.6s forwards ease-out;
+    }
+
+    .title {
+      color: #ff7597;
+      font-size: 26px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      text-shadow: 0 0 12px rgba(255, 117, 151, 0.3);
+    }
+
+    .text-body {
+      font-size: 15px;
+      line-height: 1.55;
+      color: #c4c4d4;
+      margin-bottom: 18px;
+    }
+
+    /* Блок комплимента */
+    .interactive-box {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      padding: 14px;
+      margin-bottom: 14px;
+      border: 1px dashed rgba(255, 117, 151, 0.4);
+    }
+
+    .box-text {
+      font-size: 14px;
+      color: #ffb3c6;
+      font-weight: 600;
+      min-height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.2s;
+    }
+
+    .btn-action {
+      background: rgba(255, 117, 151, 0.2);
+      border: 1px solid rgba(255, 117, 151, 0.4);
+      color: #ffb3c6;
+      padding: 8px 16px;
+      border-radius: 14px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 6px;
+    }
+
+    .btn-action:active {
+      transform: scale(0.95);
+    }
+
+    /* Блок Предсказания */
+    .prediction-box {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      padding: 14px;
+      margin-bottom: 20px;
+      border: 1px dashed rgba(162, 210, 255, 0.4);
+    }
+
+    .prediction-text {
+      font-size: 14px;
+      color: #90e0ef;
+      font-weight: 600;
+      min-height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.2s;
+    }
+
+    .btn-prediction {
+      background: rgba(144, 224, 239, 0.2);
+      border: 1px solid rgba(144, 224, 239, 0.4);
+      color: #90e0ef;
+      padding: 8px 16px;
+      border-radius: 14px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 6px;
+    }
+
+    /* Вопрос ДА / НЕТ */
+    .question-section {
+      margin-top: 10px;
+      padding-top: 15px;
+      border-top: 1px rgba(255, 255, 255, 0.1) solid;
+    }
+
+    .question-section h3 {
+      font-size: 17px;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+
+    .buttons-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      min-height: 50px;
+      position: relative;
+    }
+
+    .btn-choice {
+      padding: 12px 30px;
+      border-radius: 25px;
+      font-size: 16px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-yes {
+      background: linear-gradient(45deg, #ff477e, #7209b7);
+      color: white;
+      box-shadow: 0 6px 20px rgba(255, 71, 126, 0.5);
+    }
+
+    .btn-yes:active {
+      transform: scale(0.95);
+    }
+
+    .btn-no {
+      background: #2b2b3d;
+      color: #888899;
+      position: absolute;
+      transition: all 0.15s ease-out;
+      z-index: 100;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* Финал */
+    .final-success {
+      display: none;
+      animation: fadeIn 0.5s ease forwards;
+    }
+
+    .final-success h2 {
+      color: #ff7597;
+      font-size: 26px;
+      margin-bottom: 10px;
+      text-shadow: 0 0 15px rgba(255, 117, 151, 0.4);
+    }
+
+    /* Бесконечные сердечки */
+    .floating-emoji {
+      position: fixed;
+      bottom: -40px;
+      pointer-events: none;
+      z-index: 1;
+      animation: floatUp linear forwards;
+    }
+
+    @keyframes heartBeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.12); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) rotate(0deg); opacity: 0.9; }
+      100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Фоновая музыка -->
+  <audio id="bg-music" loop preload="auto">
+    <source src="v-x-v-prince-asylym.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="card">
+    
+    <!-- Экран 1: Конверт -->
+    <div class="start-screen" id="start-screen">
+      <div class="envelope-icon">💌</div>
+      <h2>Элина, привет!</h2>
+      <p>Тут кое-что для тебя 💭</p>
+      <div class="tap-btn">Открыть послание ✨</div>
+    </div>
+
+    <!-- Экран 2: Главное послание -->
+    <div class="content-screen" id="content-screen">
+      
+      <div id="main-story">
+        <h1 class="title">Элина! 🌸</h1>
+        <p class="text-body">
+          Привет! Очень захотелось поднять тебе настроение и позвать прогуляться. 
+          Проведём время в отличной атмосфере, поболтаем и отдохнём! 😊
+        </p>
+
+        <!-- Комплимент -->
+        <div class="interactive-box">
+          <div class="box-text" id="compliment-display">У тебя невероятно красивая улыбка! ✨</div>
+          <button class="btn-action" id="btn-next-compliment">Ещё комплимент 💖</button>
+        </div>
+
+        <!-- Предсказание дня -->
+        <div class="prediction-box">
+          <div class="prediction-text" id="prediction-display">Нажми снизу, чтобы узнать предсказание ✨</div>
+          <button class="btn-prediction" id="btn-next-prediction">Узнать предсказание 🔮</button>
+        </div>
+
+        <!-- Вопрос -->
+        <div class="question-section">
+          <h3>Пойдём погуляем?</h3>
+          <div class="buttons-wrapper" id="btn-wrapper">
+            <button class="btn-choice btn-yes" id="btn-yes">Да! 🥰</button>
+            <button class="btn-choice btn-no" id="btn-no">Нет 😜</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Финальный экран после "ДА" -->
+      <div class="final-success" id="final-success">
+        <h2>Урааа! 🎉💖</h2>
+        <p class="text-body">
+          Супер! Я очень рад! Напиши мне в ЛС, когда тебе будет удобно встретиться 😊
+        </p>
+        <div style="font-size: 55px; margin-top: 10px;">✨ 👩‍❤️‍👨 ✨</div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    const startScreen = document.getElementById('start-screen');
+    const contentScreen = document.getElementById('content-screen');
+    const music = document.getElementById('bg-music');
+    
+    const btnYes = document.getElementById('btn-yes');
+    const btnNo = document.getElementById('btn-no');
+    const mainStory = document.getElementById('main-story');
+    const finalSuccess = document.getElementById('final-success');
+
+    const complimentDisplay = document.getElementById('compliment-display');
+    const btnCompliment = document.getElementById('btn-next-compliment');
+
+    const predictionDisplay = document.getElementById('prediction-display');
+    const btnPrediction = document.getElementById('btn-next-prediction');
+
+    const emojis = ['❤️', '💖', '✨', '🌙', '💫', '🌸', '🥰', '💗', '⭐'];
+    
+    const compliments = [
+      "У тебя невероятно красивая улыбка! ✨",
+      "С тобой всегда очень весело и легко 🌸",
+      "Ты из тех людей, от которых становится теплее 💕",
+      "Твой смех поднимет настроение кому угодно ☀️",
+      "Ты супер милая! 🥰"
+    ];
+
+    const predictions = [
+      "Тебя ждёт день, полный отличного настроения 🌈",
+      "Впереди очень классная встреча и море улыбок ✨",
+      "Звёзды говорят, что прогулка получится идеальной 🌟",
+      "Сегодня идеальный день, чтобы погулять 🍦",
+      "Тебя ждёт уютный и очень приятный вечер ☕"
+    ];
+
+    let complimentIndex = 0;
+    let predictionIndex = 0;
+
+    // Звуковые эффекты (Web Audio API)
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    
+    function playSound(type) {
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      if (type === 'pop') {
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.1);
+        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.1);
+      } else if (type === 'win') {
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+        osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1);
+        osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.2);
+        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.4);
+      }
+    }
+
+    // 1. Открытие открытки
+    startScreen.addEventListener('click', () => {
+      playSound('pop');
+      startScreen.style.display = 'none';
+      contentScreen.style.display = 'block';
+
+      music.play().catch(e => console.log("Music play blocked", e));
+
+      setInterval(createEmoji, 250);
+      for(let i = 0; i < 18; i++) {
+        setTimeout(createEmoji, i * 40);
+      }
+    });
+
+    // 2. Комплименты
+    btnCompliment.addEventListener('click', () => {
+      playSound('pop');
+      complimentIndex = (complimentIndex + 1) % compliments.length;
+      complimentDisplay.style.opacity = '0';
+      setTimeout(() => {
+        complimentDisplay.innerText = compliments[complimentIndex];
+        complimentDisplay.style.opacity = '1';
+      }, 150);
+    });
+
+    // 3. Предсказания
+    btnPrediction.addEventListener('click', () => {
+      playSound('pop');
+      predictionIndex = (predictionIndex + 1) % predictions.length;
+      predictionDisplay.style.opacity = '0';
+      setTimeout(() => {
+        predictionDisplay.innerText = predictions[predictionIndex];
+        predictionDisplay.style.opacity = '1';
+      }, 150);
+    });
+
+    // 4. Убегающая кнопка "НЕТ"
+    function escapeNoButton(e) {
+      if (e) e.preventDefault();
+      playSound('pop');
+
+      const padding = 20;
+      const btnWidth = btnNo.offsetWidth || 80;
+      const btnHeight = btnNo.offsetHeight || 40;
+
+      const maxX = window.innerWidth - btnWidth - padding;
+      const maxY = window.innerHeight - btnHeight - padding;
+
+      const randomX = Math.max(padding, Math.floor(Math.random() * maxX));
+      const randomY = Math.max(padding, Math.floor(Math.random() * maxY));
+
+      btnNo.style.position = 'fixed';
+      btnNo.style.left = `${randomX}px`;
+      btnNo.style.top = `${randomY}px`;
+    }
+
+    btnNo.addEventListener('touchstart', escapeNoButton, { passive: false });
+    btnNo.addEventListener('mouseover', escapeNoButton);
+    btnNo.addEventListener('click', escapeNoButton);
+
+    // 5. Клик на "ДА!"
+    btnYes.addEventListener('click', () => {
+      playSound('win');
+      mainStory.style.display = 'none';
+      finalSuccess.style.display = 'block';
+
+      for (let i = 0; i < 40; i++) {
+        setTimeout(createEmoji, i * 30);
+      }
+    });
+
+    // Генерация сердечек
+    function createEmoji() {
+      const emoji = document.createElement('div');
+      emoji.classList.add('floating-emoji');
+      emoji.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+
+      emoji.style.left = Math.random() * 100 + 'vw';
+      const size = Math.random() * 20 + 16;
+      emoji.style.fontSize = size + 'px';
+
+      const duration = Math.random() * 3 + 3.5;
+      emoji.style.animationDuration = duration + 's';
+
+      document.body.appendChild(emoji);
+
+      setTimeout(() => {
+        emoji.remove();
+      }, duration * 1000);
+    }
+  </script>
+</body>
+</html>
